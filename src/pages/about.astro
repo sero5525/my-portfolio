@@ -1,23 +1,11 @@
 ---
-import '../styles/global.css';
+import Layout from '../layouts/Layout.astro';
 ---
 
-<html lang="ja">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<title>About | Artist Portfolio</title>
-	</head>
-	<body class="bg-black text-white min-h-screen p-8">
-
-		<header class="mb-16">
-			<a href="/" class="font-bold tracking-widest text-sm hover:text-gray-400 transition-colors">
-				&larr; ARTIST NAME
-			</a>
-		</header>
+<Layout title="About | asairo">
+	<div class="p-8">
 
 		<main class="max-w-4xl mx-auto mt-20">
-			
 			<div class="flex flex-col md:flex-row gap-12 items-start">
 				
 				<div class="w-full md:w-1/3">
@@ -28,7 +16,6 @@ import '../styles/global.css';
 				</div>
 
 				<div class="w-full md:w-2/3">
-					
 					<section>
 						<h2 class="text-xs text-gray-500 mb-6 tracking-widest">BIOGRAPHY</h2>
 						<p class="text-gray-300 leading-loose text-sm tracking-wide">
@@ -37,11 +24,10 @@ import '../styles/global.css';
 							特定のジャンルには固執せず、その時々の感情を記録しています。
 						</p>
 					</section>
-
 				</div>
 
 			</div>
 		</main>
 
-	</body>
-</html>
+	</div>
+</Layout>

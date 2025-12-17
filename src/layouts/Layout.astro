@@ -1,22 +1,90 @@
-<!doctype html>
-<html lang="en">
+---
+// src/layouts/Layout.astro
+import '../styles/global.css';
+
+const { title } = Astro.props;
+---
+
+<html lang="ja">
 	<head>
-		<meta charset="UTF-8" />
+		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
 	</head>
-	<body>
-		<slot />
+	<body class="bg-black text-white min-h-screen flex flex-col">
+		
+		<header class="fixed top-0 left-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference">
+			<a href="/" class="font-bold tracking-widest text-sm hover:opacity-70 transition-opacity">
+				asairo
+			</a>
+
+			<button id="menu-btn" class="space-y-2 cursor-pointer z-50">
+				<span class="block w-8 h-0.5 bg-white transition-transform duration-300"></span>
+				<span class="block w-8 h-0.5 bg-white transition-opacity duration-300"></span>
+				<span class="block w-8 h-0.5 bg-white transition-transform duration-300"></span>
+			</button>
+		</header>
+
+		<nav id="menu-overlay" class="fixed inset-0 bg-black z-40 flex flex-col justify-center items-center opacity-0 pointer-events-none transition-opacity duration-500">
+			<ul class="space-y-8 text-center">
+				<li><a href="/" class="menu-link text-4xl font-bold tracking-widest hover:text-gray-500 transition-colors">HOME</a></li>
+				<li><a href="/works" class="menu-link text-4xl font-bold tracking-widest hover:text-gray-500 transition-colors">WORKS</a></li>
+				<li><a href="/about" class="menu-link text-4xl font-bold tracking-widest hover:text-gray-500 transition-colors">ABOUT</a></li>
+				<li><a href="/contact" class="menu-link text-4xl font-bold tracking-widest hover:text-gray-500 transition-colors">CONTACT</a></li>
+			</ul>
+		</nav>
+
+		<div class="flex-grow flex flex-col w-full pt-24"> <slot />
+		</div>
+
+		<footer class="py-12 text-center space-y-6">
+			<div class="flex justify-center gap-8 text-xs tracking-widest font-bold text-gray-500">
+				<a href="https://twitter.com/YOUR_ID" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">X (Twitter)</a>
+				<a href="https://youtube.com/YOUR_CHANNEL" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">YouTube</a>
+			</div>
+			<p class="text-xs text-gray-800 tracking-widest">&copy; 2025 asairo</p>
+		</footer>
+
+		<script>
+			const menuBtn = document.getElementById('menu-btn');
+			const menuOverlay = document.getElementById('menu-overlay');
+			const menuLinks = document.querySelectorAll('.menu-link');
+			const spans = menuBtn?.querySelectorAll('span');
+
+			let isOpen = false;
+
+			menuBtn?.addEventListener('click', () => {
+				isOpen = !isOpen;
+				toggleMenu();
+			});
+
+			// リンクをクリックしたらメニューを閉じる
+			menuLinks.forEach(link => {
+				link.addEventListener('click', () => {
+					isOpen = false;
+					toggleMenu();
+				});
+			});
+
+			function toggleMenu() {
+				if (!menuOverlay || !spans) return;
+
+				if (isOpen) {
+					// メニューを開く
+					menuOverlay.classList.remove('opacity-0', 'pointer-events-none');
+					// ハンバーガーを×印に変えるアニメーション
+					spans[0].classList.add('rotate-45', 'translate-y-2.5');
+					spans[1].classList.add('opacity-0');
+					spans[2].classList.add('-rotate-45', '-translate-y-2.5');
+				} else {
+					// メニューを閉じる
+					menuOverlay.classList.add('opacity-0', 'pointer-events-none');
+					// ×印をハンバーガーに戻す
+					spans[0].classList.remove('rotate-45', 'translate-y-2.5');
+					spans[1].classList.remove('opacity-0');
+					spans[2].classList.remove('-rotate-45', '-translate-y-2.5');
+				}
+			}
+		</script>
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

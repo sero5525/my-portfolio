@@ -1,21 +1,12 @@
 ---
-import '../styles/global.css';
+import Layout from '../layouts/Layout.astro';
 ---
 
-<html lang="ja">
-    <head>
-        <meta charset = "utf-8" />
-        <meta name="viewpoint" content="width=device-width" />
-        <title>Works | asairo</title>
-    </head>
-    <body class = "bg-black text-white min-h-screen p-8">
-            <header class="mb-16">
-                <a href="/" class="font-bold tracking-widest test-sm hover:text-gray-400 transition-colors">
-                    &larr; asairo
-                </a>
-            </header>
-            <main class="max-w-6xl mx-auto">
-			<h2 class="text-xs text-gray-500 mb-8 tracking-widest">WORKS</h2>
+<Layout title="Works | asairo">
+	<div class="p-8">
+
+		<main class="max-w-6xl mx-auto">
+			<h2 class="text-xs text-gray-500 mb-8 tracking-widest">SELECTED WORKS</h2>
 
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
 				
@@ -39,17 +30,8 @@ import '../styles/global.css';
 					</div>
 				</div>
 
-				<div class="space-y-4">
-					<div class="aspect-video bg-gray-900 border border-gray-800 flex justify-center items-center">
-						<span class="text-gray-600">YouTube Embed 03</span>
-					</div>
-					<div>
-						<h3 class="text-lg font-bold tracking-wider">Song Title 03</h3>
-						<p class="text-sm text-gray-500 mt-1">2024.10.20 Release</p>
-					</div>
-				</div>
-
 			</div>
 		</main>
-    </body>
-</html>
+		
+	</div>
+</Layout>

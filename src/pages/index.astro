@@ -1,24 +1,20 @@
 ---
-import '../styles/global.css';
+// src/pages/index.astro
+import Layout from '../layouts/Layout.astro';
 ---
 
-<html lang="ja">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<title>asairo</title>
-	</head>
-	<body class="bg-black text-white h-screen flex justify-center items-center">
-		
-        <h1 class="text-4xl font-bold tracking-widest">
+<Layout title="asairo">
+	
+	<main class="flex-grow flex flex-col justify-center items-center gap-8 p-8">
+		<h1 class="text-4xl font-bold tracking-widest">
 			asairo
 		</h1>
-	<main class="flex flex-col items-center gap-8">
-			<nav class="flex gap-6 text-sm tracking-wider text-gray-400">
-				<a href="/works" class="hover:text-white transition-colors">WORKS</a>
-				<a href="/about" class="hover:text-white transition-colors">ABOUT</a>
-				<a href="/contact" class="hover:text-white transition-colors">CONTACT</a>
-			</nav>
-		</main>
-	</body>
-</html>
+
+		<nav class="flex gap-6 text-sm tracking-wider text-gray-400">
+			<a href="/works" class="hover:text-white transition-colors">WORKS</a>
+			<a href="/about" class="hover:text-white transition-colors">ABOUT</a>
+			<a href="/contact" class="hover:text-white transition-colors">CONTACT</a>
+		</nav>
+	</main>
+
+</Layout>
