@@ -9,12 +9,18 @@ const { title } = Astro.props;
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<title>{title}</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
 	</head>
-	<body class="bg-black text-white min-h-screen flex flex-col">
+	
+	<body class="bg-black text-white min-h-screen flex flex-col tracking-wider" style="font-family: 'Inter', 'Noto Sans JP', sans-serif;">
 		
 		<header class="fixed top-0 left-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference">
-			<a href="/" class="font-bold tracking-widest text-sm hover:opacity-70 transition-opacity">
+			<a href="/" class="text-sm font-bold hover:opacity-70 transition-opacity">
 				asairo
 			</a>
 
@@ -27,22 +33,27 @@ const { title } = Astro.props;
 
 		<nav id="menu-overlay" class="fixed inset-0 bg-black z-40 flex flex-col justify-center items-center opacity-0 pointer-events-none transition-opacity duration-500">
 			<ul class="space-y-8 text-center">
-				<li><a href="/" class="menu-link text-4xl font-bold tracking-widest hover:text-gray-500 transition-colors">HOME</a></li>
-				<li><a href="/works" class="menu-link text-4xl font-bold tracking-widest hover:text-gray-500 transition-colors">WORKS</a></li>
-				<li><a href="/about" class="menu-link text-4xl font-bold tracking-widest hover:text-gray-500 transition-colors">ABOUT</a></li>
-				<li><a href="/contact" class="menu-link text-4xl font-bold tracking-widest hover:text-gray-500 transition-colors">CONTACT</a></li>
+				<li><a href="/" class="menu-link text-3xl font-bold hover:text-gray-500 transition-colors">HOME</a></li>
+				<li><a href="/works" class="menu-link text-3xl font-bold hover:text-gray-500 transition-colors">WORKS</a></li>
+				<li><a href="/about" class="menu-link text-3xl font-bold hover:text-gray-500 transition-colors">ABOUT</a></li>
+				<li><a href="/contact" class="menu-link text-3xl font-bold hover:text-gray-500 transition-colors">CONTACT</a></li>
 			</ul>
 		</nav>
 
-		<div class="flex-grow flex flex-col w-full pt-24"> <slot />
+		<div class="flex-grow flex flex-col w-full pt-24">
+			<slot />
 		</div>
 
 		<footer class="py-12 text-center space-y-6">
-			<div class="flex justify-center gap-8 text-xs tracking-widest font-bold text-gray-500">
-				<a href="https://twitter.com/YOUR_ID" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">X (Twitter)</a>
-				<a href="https://youtube.com/YOUR_CHANNEL" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">YouTube</a>
+			<div class="flex justify-center gap-8 text-xs font-bold text-gray-500">
+				<a href="https://x.com/asairo0" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+					X (Twitter)
+				</a>
+				<a href="https://youtube.com/@asairo2" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+					YouTube
+				</a>
 			</div>
-			<p class="text-xs text-gray-800 tracking-widest">&copy; 2025 asairo</p>
+			<p class="text-xs text-gray-800">&copy; 2025 asairo</p>
 		</footer>
 
 		<script>
@@ -58,7 +69,6 @@ const { title } = Astro.props;
 				toggleMenu();
 			});
 
-			// リンクをクリックしたらメニューを閉じる
 			menuLinks.forEach(link => {
 				link.addEventListener('click', () => {
 					isOpen = false;
@@ -70,16 +80,12 @@ const { title } = Astro.props;
 				if (!menuOverlay || !spans) return;
 
 				if (isOpen) {
-					// メニューを開く
 					menuOverlay.classList.remove('opacity-0', 'pointer-events-none');
-					// ハンバーガーを×印に変えるアニメーション
 					spans[0].classList.add('rotate-45', 'translate-y-2.5');
 					spans[1].classList.add('opacity-0');
 					spans[2].classList.add('-rotate-45', '-translate-y-2.5');
 				} else {
-					// メニューを閉じる
 					menuOverlay.classList.add('opacity-0', 'pointer-events-none');
-					// ×印をハンバーガーに戻す
 					spans[0].classList.remove('rotate-45', 'translate-y-2.5');
 					spans[1].classList.remove('opacity-0');
 					spans[2].classList.remove('-rotate-45', '-translate-y-2.5');
