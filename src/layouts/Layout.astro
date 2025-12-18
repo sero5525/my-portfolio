@@ -1,8 +1,14 @@
 ---
 // src/layouts/Layout.astro
 import '../styles/global.css';
+import { ClientRouter } from "astro:transitions";
 
-const { title } = Astro.props;
+const siteName = 'asairo';
+const { pageTitle = '', description = '' } = Astro.props;
+
+const fullTitle = pageTitle?.trim()
+  ? `${pageTitle.trim()} | ${siteName}`
+  : siteName;
 ---
 
 <html lang="ja">
@@ -10,7 +16,12 @@ const { title } = Astro.props;
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>{title}</title>
+		<title>{fullTitle}</title>
+		{description && <meta name="description" content={description} />}
+		<title>{fullTitle}</title>
+		<meta name="description" content={description} />
+
+		<ClientRouter />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,19 +35,39 @@ const { title } = Astro.props;
 				asairo
 			</a>
 
-			<button id="menu-btn" class="space-y-2 cursor-pointer z-50">
+			<button id="menu-btn" class="space-y-2 cursor-pointer z-50 p-4">
 				<span class="block w-8 h-0.5 bg-white transition-transform duration-300"></span>
 				<span class="block w-8 h-0.5 bg-white transition-opacity duration-300"></span>
 				<span class="block w-8 h-0.5 bg-white transition-transform duration-300"></span>
 			</button>
 		</header>
 
-		<nav id="menu-overlay" class="fixed inset-0 bg-black z-40 flex flex-col justify-center items-center opacity-0 pointer-events-none transition-opacity duration-500">
+			<nav
+			id="menu-overlay"
+			class="fixed inset-0 z-40 grid place-items-center bg-black/40 backdrop-blur-md border border-white/10 opacity-0 pointer-events-none transition-opacity duration-300"
+			>
+
 			<ul class="space-y-8 text-center">
-				<li><a href="/" class="menu-link text-3xl font-bold hover:text-gray-500 transition-colors">HOME</a></li>
-				<li><a href="/works" class="menu-link text-3xl font-bold hover:text-gray-500 transition-colors">WORKS</a></li>
-				<li><a href="/about" class="menu-link text-3xl font-bold hover:text-gray-500 transition-colors">ABOUT</a></li>
-				<li><a href="/contact" class="menu-link text-3xl font-bold hover:text-gray-500 transition-colors">CONTACT</a></li>
+			<li>
+				<a href="/" class="menu-link inline-block px-3 py-2 text-3xl font-bold hover:text-gray-500 transition-colors">
+				HOME
+				</a>
+			</li>
+			<li>
+				<a href="/works" class="menu-link inline-block px-3 py-2 text-3xl font-bold hover:text-gray-500 transition-colors">
+				WORKS
+				</a>
+			</li>
+			<li>
+				<a href="/about" class="menu-link inline-block px-3 py-2 text-3xl font-bold hover:text-gray-500 transition-colors">
+				ABOUT
+				</a>
+			</li>
+			<li>
+				<a href="/contact" class="menu-link inline-block px-3 py-2 text-3xl font-bold hover:text-gray-500 transition-colors">
+				CONTACT
+				</a>
+			</li>
 			</ul>
 		</nav>
 
@@ -56,41 +87,57 @@ const { title } = Astro.props;
 			<p class="text-xs text-gray-800">&copy; 2025 asairo</p>
 		</footer>
 
-		<script>
+		<script is:inline>
+		function initMenu() {
 			const menuBtn = document.getElementById('menu-btn');
 			const menuOverlay = document.getElementById('menu-overlay');
 			const menuLinks = document.querySelectorAll('.menu-link');
-			const spans = menuBtn?.querySelectorAll('span');
 
+			if (!menuBtn || !menuOverlay) return;
+
+			// すでに初期化済みなら二重登録しない
+			if (menuBtn.dataset.bound === '1') return;
+			menuBtn.dataset.bound = '1';
+
+			const spans = menuBtn.querySelectorAll('span');
 			let isOpen = false;
 
-			menuBtn?.addEventListener('click', () => {
-				isOpen = !isOpen;
+			function toggleMenu() {
+			if (isOpen) {
+				menuOverlay.classList.remove('opacity-0', 'pointer-events-none');
+				spans[0].classList.add('rotate-45', 'translate-y-2.5');
+				spans[1].classList.add('opacity-0');
+				spans[2].classList.add('-rotate-45', '-translate-y-2.5');
+			} else {
+				menuOverlay.classList.add('opacity-0', 'pointer-events-none');
+				spans[0].classList.remove('rotate-45', 'translate-y-2.5');
+				spans[1].classList.remove('opacity-0');
+				spans[2].classList.remove('-rotate-45', '-translate-y-2.5');
+			}
+			}
+
+			menuBtn.addEventListener('click', () => {
+			isOpen = !isOpen;
+			toggleMenu();
+			});
+
+			menuLinks.forEach((link) => {
+			link.addEventListener('click', () => {
+				isOpen = false;
 				toggleMenu();
 			});
-
-			menuLinks.forEach(link => {
-				link.addEventListener('click', () => {
-					isOpen = false;
-					toggleMenu();
-				});
+			});
+			menuOverlay.addEventListener('click', (e) => {
+			if (e.target !== menuOverlay) return;
+			isOpen = false;
+			toggleMenu();
 			});
 
-			function toggleMenu() {
-				if (!menuOverlay || !spans) return;
+		}
 
-				if (isOpen) {
-					menuOverlay.classList.remove('opacity-0', 'pointer-events-none');
-					spans[0].classList.add('rotate-45', 'translate-y-2.5');
-					spans[1].classList.add('opacity-0');
-					spans[2].classList.add('-rotate-45', '-translate-y-2.5');
-				} else {
-					menuOverlay.classList.add('opacity-0', 'pointer-events-none');
-					spans[0].classList.remove('rotate-45', 'translate-y-2.5');
-					spans[1].classList.remove('opacity-0');
-					spans[2].classList.remove('-rotate-45', '-translate-y-2.5');
-				}
-			}
+		// ClientRouter 使用時：初回＋遷移後に発火するイベント
+		document.addEventListener('astro:page-load', initMenu);
 		</script>
+
 	</body>
 </html>
