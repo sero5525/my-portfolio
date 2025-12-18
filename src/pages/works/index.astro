@@ -1,0 +1,40 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { works } from "../../data/works";
+
+const selected = works.filter((w) => w.selected).slice(0, 5);
+
+---
+
+
+<Layout pageTitle="Works">
+  <main class="max-w-5xl mx-auto px-8 py-12">
+    <h2 class="text-xs text-gray-500 mb-10 tracking-widest">SELECTED WORKS</h2>
+
+    <ul class="space-y-4">
+      {selected.map((w) => (
+        <li>
+          <a
+            href={`/works/${w.id}`}
+            class="group flex items-baseline justify-between gap-6 border-b border-white/10 pb-3"
+          >
+            <span class="text-gray-300 group-hover:text-white transition-colors tracking-wider">
+              {w.title}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-10">
+      <a
+        href="https://youtube.com/@asairo2"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-[10px] text-gray-600 tracking-[0.35em] uppercase hover:text-gray-300 transition-colors"
+      >
+        VIEW ALL ON YOUTUBE ↗
+      </a>
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,65 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { works } from "../../data/works";
+
+export function getStaticPaths() {
+  return works.map((w) => ({
+    params: { id: w.id },
+    props: { work: w },
+  }));
+}
+
+const { work } = Astro.props;
+---
+
+<Layout pageTitle={work.title} contentPadTopClass="pt-0" hideFooter={true}>
+  <main class="min-h-screen flex flex-col items-center justify-center px-6 pt-0 py-6 gap-4">
+    <!-- PLAYER -->
+    <div class="player overflow-hidden border border-white/10 bg-black/40">
+      <iframe
+        class="w-full h-full"
+        src={`https://www.youtube-nocookie.com/embed/${work.youtubeId}`}
+        title={work.title}
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      />
+    </div>
+
+    <!-- TITLE -->
+    <h1 class="text-lg font-bold tracking-wider text-center">
+      {work.title}
+    </h1>
+
+    <!-- LINKS -->
+    <div class="flex items-center gap-6">
+      <a
+        href="/works"
+        class="text-[10px] text-gray-600 tracking-[0.35em] uppercase hover:text-gray-300 transition-colors"
+      >
+        ← BACK
+      </a>
+
+      <a
+        href={`https://www.youtube.com/watch?v=${work.youtubeId}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-[10px] text-gray-600 tracking-[0.35em] uppercase hover:text-gray-300 transition-colors"
+      >
+        YOUTUBE ↗
+      </a>
+    </div>
+  </main>
+
+  <style>
+    .player {
+      aspect-ratio: 16 / 9;
+
+      /* 横方向の安全装置（ほぼ触らなくていい） */
+      width: min(92vw, 1000px);
+
+      /* 高さ基準：余白込みで画面に収める */
+      max-width: calc((100svh - 220px) * 16 / 9);
+    }
+  </style>
+</Layout>

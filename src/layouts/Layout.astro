@@ -1,10 +1,16 @@
 ---
 // src/layouts/Layout.astro
-import '../styles/global.css';
+import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 
-const siteName = 'asairo';
-const { pageTitle = '', description = '' } = Astro.props;
+const siteName = "asairo";
+
+const {
+  pageTitle = "",
+  description = "",
+  contentPadTopClass = "pt-24",
+  hideFooter = false,
+} = Astro.props;
 
 const fullTitle = pageTitle?.trim()
   ? `${pageTitle.trim()} | ${siteName}`
@@ -12,132 +18,145 @@ const fullTitle = pageTitle?.trim()
 ---
 
 <html lang="ja">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>{fullTitle}</title>
-		{description && <meta name="description" content={description} />}
-		<title>{fullTitle}</title>
-		<meta name="description" content={description} />
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{fullTitle}</title>
+	{description ? (
+	<meta name="description" content={description} />
+	) : null}
 
-		<ClientRouter />
+    <ClientRouter />
 
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
-	</head>
-	
-	<body class="bg-black text-white min-h-screen flex flex-col tracking-wider" style="font-family: 'Inter', 'Noto Sans JP', sans-serif;">
-		
-		<header class="fixed top-0 left-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference">
-			<a href="/" class="text-sm font-bold hover:opacity-70 transition-opacity">
-				asairo
-			</a>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-			<button id="menu-btn" class="space-y-2 cursor-pointer z-50 p-4">
-				<span class="block w-8 h-0.5 bg-white transition-transform duration-300"></span>
-				<span class="block w-8 h-0.5 bg-white transition-opacity duration-300"></span>
-				<span class="block w-8 h-0.5 bg-white transition-transform duration-300"></span>
-			</button>
-		</header>
+  <body
+    class="bg-neutral-900 text-white min-h-screen flex flex-col tracking-wider"
+    style="font-family: 'Inter', 'Noto Sans JP', sans-serif;"
+  >
+    <header class="fixed top-0 left-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference">
+      <a href="/" class="text-sm font-bold hover:opacity-70 transition-opacity">
+        asairo
+      </a>
 
-			<nav
-			id="menu-overlay"
-			class="fixed inset-0 z-40 grid place-items-center bg-black/40 backdrop-blur-md border border-white/10 opacity-0 pointer-events-none transition-opacity duration-300"
-			>
+      <button id="menu-btn" class="space-y-2 cursor-pointer z-50 p-4">
+        <span class="block w-8 h-0.5 bg-white transition-transform duration-300"></span>
+        <span class="block w-8 h-0.5 bg-white transition-opacity duration-300"></span>
+        <span class="block w-8 h-0.5 bg-white transition-transform duration-300"></span>
+      </button>
+    </header>
 
-			<ul class="space-y-8 text-center">
-			<li>
-				<a href="/" class="menu-link inline-block px-3 py-2 text-3xl font-bold hover:text-gray-500 transition-colors">
-				HOME
-				</a>
-			</li>
-			<li>
-				<a href="/works" class="menu-link inline-block px-3 py-2 text-3xl font-bold hover:text-gray-500 transition-colors">
-				WORKS
-				</a>
-			</li>
-			<li>
-				<a href="/about" class="menu-link inline-block px-3 py-2 text-3xl font-bold hover:text-gray-500 transition-colors">
-				ABOUT
-				</a>
-			</li>
-			<li>
-				<a href="/contact" class="menu-link inline-block px-3 py-2 text-3xl font-bold hover:text-gray-500 transition-colors">
-				CONTACT
-				</a>
-			</li>
-			</ul>
-		</nav>
+    <nav
+      id="menu-overlay"
+      class="fixed inset-0 z-40 grid place-items-center bg-neutral-900/40 backdrop-blur-md border border-white/10 opacity-0 pointer-events-none transition-opacity duration-300"
+    >
+      <ul class="space-y-8 text-center">
+        <li>
+          <a href="/" class="menu-link inline-block px-3 py-2 text-3xl font-bold hover:text-gray-500 transition-colors">
+            HOME
+          </a>
+        </li>
+        <li>
+          <a href="/works" class="menu-link inline-block px-3 py-2 text-3xl font-bold hover:text-gray-500 transition-colors">
+            WORKS
+          </a>
+        </li>
+        <li>
+          <a href="/about" class="menu-link inline-block px-3 py-2 text-3xl font-bold hover:text-gray-500 transition-colors">
+            ABOUT
+          </a>
+        </li>
+        <li>
+          <a href="/contact" class="menu-link inline-block px-3 py-2 text-3xl font-bold hover:text-gray-500 transition-colors">
+            CONTACT
+          </a>
+        </li>
+      </ul>
+    </nav>
 
-		<div class="flex-grow flex flex-col w-full pt-24">
-			<slot />
-		</div>
+    <div class={`flex-grow flex flex-col w-full ${contentPadTopClass}`}>
+      <slot />
+    </div>
 
-		<footer class="py-12 text-center space-y-6">
-			<div class="flex justify-center gap-8 text-xs font-bold text-gray-500">
-				<a href="https://x.com/asairo0" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
-					X (Twitter)
-				</a>
-				<a href="https://youtube.com/@asairo2" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
-					YouTube
-				</a>
-			</div>
-			<p class="text-xs text-gray-800">&copy; 2025 asairo</p>
-		</footer>
+    {!hideFooter && (
+      <footer class="py-12 text-center space-y-6">
+        <div class="flex justify-center gap-8 text-xs font-bold text-gray-500">
+          <a
+            href="https://x.com/asairo0"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-white transition-colors"
+          >
+            X (Twitter)
+          </a>
+          <a
+            href="https://youtube.com/@asairo2"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-white transition-colors"
+          >
+            YouTube
+          </a>
+        </div>
+        <p class="text-xs text-gray-800">&copy; 2025 asairo</p>
+      </footer>
+    )}
 
-		<script is:inline>
-		function initMenu() {
-			const menuBtn = document.getElementById('menu-btn');
-			const menuOverlay = document.getElementById('menu-overlay');
-			const menuLinks = document.querySelectorAll('.menu-link');
+    <script is:inline>
+      function initMenu() {
+        const menuBtn = document.getElementById('menu-btn');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const menuLinks = document.querySelectorAll('.menu-link');
 
-			if (!menuBtn || !menuOverlay) return;
+        if (!menuBtn || !menuOverlay) return;
 
-			// すでに初期化済みなら二重登録しない
-			if (menuBtn.dataset.bound === '1') return;
-			menuBtn.dataset.bound = '1';
+        if (menuBtn.dataset.bound === '1') return;
+        menuBtn.dataset.bound = '1';
 
-			const spans = menuBtn.querySelectorAll('span');
-			let isOpen = false;
+        const spans = menuBtn.querySelectorAll('span');
+        let isOpen = false;
 
-			function toggleMenu() {
-			if (isOpen) {
-				menuOverlay.classList.remove('opacity-0', 'pointer-events-none');
-				spans[0].classList.add('rotate-45', 'translate-y-2.5');
-				spans[1].classList.add('opacity-0');
-				spans[2].classList.add('-rotate-45', '-translate-y-2.5');
-			} else {
-				menuOverlay.classList.add('opacity-0', 'pointer-events-none');
-				spans[0].classList.remove('rotate-45', 'translate-y-2.5');
-				spans[1].classList.remove('opacity-0');
-				spans[2].classList.remove('-rotate-45', '-translate-y-2.5');
-			}
-			}
+        function toggleMenu() {
+          if (isOpen) {
+            menuOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            spans[0].classList.add('rotate-45', 'translate-y-2.5');
+            spans[1].classList.add('opacity-0');
+            spans[2].classList.add('-rotate-45', '-translate-y-2.5');
+          } else {
+            menuOverlay.classList.add('opacity-0', 'pointer-events-none');
+            spans[0].classList.remove('rotate-45', 'translate-y-2.5');
+            spans[1].classList.remove('opacity-0');
+            spans[2].classList.remove('-rotate-45', '-translate-y-2.5');
+          }
+        }
 
-			menuBtn.addEventListener('click', () => {
-			isOpen = !isOpen;
-			toggleMenu();
-			});
+        menuBtn.addEventListener('click', () => {
+          isOpen = !isOpen;
+          toggleMenu();
+        });
 
-			menuLinks.forEach((link) => {
-			link.addEventListener('click', () => {
-				isOpen = false;
-				toggleMenu();
-			});
-			});
-			menuOverlay.addEventListener('click', (e) => {
-			if (e.target !== menuOverlay) return;
-			isOpen = false;
-			toggleMenu();
-			});
+        menuLinks.forEach((link) => {
+          link.addEventListener('click', () => {
+            isOpen = false;
+            toggleMenu();
+          });
+        });
 
-		}
+        menuOverlay.addEventListener('click', (e) => {
+          if (e.target !== menuOverlay) return;
+          isOpen = false;
+          toggleMenu();
+        });
+      }
 
-		// ClientRouter 使用時：初回＋遷移後に発火するイベント
-		document.addEventListener('astro:page-load', initMenu);
-		</script>
-
-	</body>
+      document.addEventListener('astro:page-load', initMenu);
+    </script>
+  </body>
 </html>
