@@ -46,7 +46,14 @@ const fullTitle = pageTitle?.trim()
         asairo
       </a>
 
-      <button id="menu-btn" class="space-y-2 cursor-pointer z-50 p-4">
+      <button
+        id="menu-btn"
+        type="button"
+        class="space-y-2 cursor-pointer z-50 p-4"
+        aria-label="メニュー"
+        aria-expanded="false"
+        aria-controls="menu-overlay"
+      >
         <span class="block w-8 h-0.5 bg-white transition-transform duration-300"></span>
         <span class="block w-8 h-0.5 bg-white transition-opacity duration-300"></span>
         <span class="block w-8 h-0.5 bg-white transition-transform duration-300"></span>
@@ -56,6 +63,8 @@ const fullTitle = pageTitle?.trim()
     <nav
       id="menu-overlay"
       class="fixed inset-0 z-40 grid place-items-center bg-neutral-900/40 backdrop-blur-md border border-white/10 opacity-0 pointer-events-none transition-opacity duration-300"
+      aria-hidden="true"
+      tabindex="-1"
     >
       <ul class="space-y-8 text-center">
         <li>
@@ -124,16 +133,21 @@ const fullTitle = pageTitle?.trim()
         let isOpen = false;
 
         function toggleMenu() {
+          menuBtn.setAttribute('aria-expanded', String(isOpen));
+          menuOverlay.setAttribute('aria-hidden', String(!isOpen));
+
           if (isOpen) {
             menuOverlay.classList.remove('opacity-0', 'pointer-events-none');
             spans[0].classList.add('rotate-45', 'translate-y-2.5');
             spans[1].classList.add('opacity-0');
             spans[2].classList.add('-rotate-45', '-translate-y-2.5');
+            menuOverlay.focus();
           } else {
             menuOverlay.classList.add('opacity-0', 'pointer-events-none');
             spans[0].classList.remove('rotate-45', 'translate-y-2.5');
             spans[1].classList.remove('opacity-0');
             spans[2].classList.remove('-rotate-45', '-translate-y-2.5');
+            menuBtn.focus();
           }
         }
 
@@ -151,6 +165,13 @@ const fullTitle = pageTitle?.trim()
 
         menuOverlay.addEventListener('click', (e) => {
           if (e.target !== menuOverlay) return;
+          isOpen = false;
+          toggleMenu();
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (!isOpen) return;
+          if (e.key !== 'Escape') return;
           isOpen = false;
           toggleMenu();
         });
